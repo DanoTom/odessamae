@@ -1,0 +1,176 @@
+# ---------------------------------------------------------------------------
+# Odessa Mae — configuración del generador de videos (odessa.py)
+#
+# Todas las rutas son relativas a esta carpeta. Para una tanda nueva de
+# canciones alcanza con agregar entradas en [[songs]], poner los MP3 y las
+# fotos con los nombres que se indican abajo y sumar las letras al .md.
+# ---------------------------------------------------------------------------
+
+[paths]
+mp3_dir     = "input/mp3"          # NN-archivo-base.mp3
+images_dir  = "input/images"       # foto-NN.png  (blanco y negro)
+fonts_dir   = "input/fonts"        # .ttf de Abril Fatface y Libre Baskerville
+lyrics_file = "Letras.md"          # acepta bloques **Lyrics** ```text``` o LYRICS … CREDITS
+face_model  = "input/models/face_detection_yunet_2023mar.onnx"
+output_dir  = "output"
+work_dir    = "work"               # caché: transcripciones, alineación, audio normalizado, .ass
+
+[artist]
+name = "Odessa Mae"
+
+# ---------------------------------------------------------------------------
+# Canciones. single = true genera sencillo con letra + Short.
+# compilation = true la incluye en la compilación (en este orden).
+# ---------------------------------------------------------------------------
+[[songs]]
+n = 1
+base = "you-walked-me-home"
+title = "You Walked Me Home"
+single = true
+compilation = true
+
+[[songs]]
+n = 2
+base = "blue-sunday-dress"
+title = "Blue Sunday Dress"
+single = true
+compilation = true
+
+[[songs]]
+n = 3
+base = "two-cups-on-the-table"
+title = "Two Cups on the Table"
+single = true
+compilation = true
+
+[[songs]]
+n = 4
+base = "every-letter-says-next-month"
+title = "Every Letter Says Next Month"
+single = true
+compilation = true
+
+[[songs]]
+n = 5
+base = "leave-the-porch-light-on"
+title = "Leave the Porch Light On"
+single = true
+compilation = true
+
+[[songs]]
+n = 6
+base = "mama-says"
+title = "Mama Says"
+single = true
+compilation = true
+
+[[songs]]
+n = 7
+base = "first-night-at-mama-roses"
+title = "First Night at Mama Rose's"
+single = true
+compilation = true
+
+[[songs]]
+n = 8
+base = "i-dont-live-there-anymore"
+title = "I Don't Live There Anymore"
+single = true
+compilation = true
+
+[[songs]]
+n = 9
+base = "chicago-took-my-man"
+title = "Chicago Took My Man"
+single = false
+compilation = true
+
+[[songs]]
+n = 10
+base = "i-turned-the-porch-light-off"
+title = "I Turned the Porch Light Off"
+single = false
+compilation = true
+
+# ---------------------------------------------------------------------------
+[video]
+width  = 1920
+height = 1080
+fps    = 30
+crf    = 18
+preset = "medium"           # preset de x264 (slow = archivos algo más chicos, más lento)
+zoom_start = 1.00           # zoom lento y continuo durante toda la canción
+zoom_end   = 1.06
+zoom_source_scale = 2       # la imagen se escala a 2x la salida (4K) antes del zoompan
+grain = 8                   # grano animado (fuerza del filtro noise de ffmpeg; 0 = sin grano)
+vignette_angle = "PI/5.5"   # viñeta: ángulo menor = más suave
+fade_out = 2.0              # fundido a negro final (segundos)
+jobs = 2                    # renders en paralelo
+
+[audio]
+lufs = -14.0
+true_peak = -1.0
+lra = 20.0                  # LRA objetivo alto: loudnorm queda en modo lineal (solo ganancia)
+bitrate = "320k"
+sample_rate = 48000
+
+[title_card]                # cartel inicial de los sencillos
+duration = 6.0
+fade = 0.8
+min_gap_before_voice = 1.0  # si la voz entra antes de los 6 s, el cartel se va 1 s antes
+color = "#F2E6D0"
+chapter_font = "Libre Baskerville"
+chapter_size = 40
+title_font = "Abril Fatface"
+title_size = 104
+artist_font = "Libre Baskerville"
+artist_size = 36
+# posición vertical (borde inferior de cada línea, en px desde arriba, para 1080 de alto)
+chapter_y = 818
+title_y = 950
+artist_y = 1010
+
+[lyrics]
+font = "Libre Baskerville"
+size = 54
+color = "#F2E6D0"
+outline = 2.6
+outline_color = "#000000"
+outline_opacity = 0.55      # borde oscuro semitransparente
+halo_opacity = 0.30         # halo oscuro muy difuso detrás de la letra (0 = sin halo)
+halo_size = 10
+margin_bottom = 78
+margin_sides = 120
+lead = 0.2                  # la línea aparece 0,2 s antes de que se cante
+silence_hold = 1.5          # y se va tras 1,5 s de silencio (o cuando empieza la siguiente)
+min_display = 0.7
+strip_line_end_punct = true # quita la coma/punto final de cada línea (no ? ni !)
+whisper_model = "medium.en"
+whisper_compute = "int8"
+whisper_threads = 4
+
+[shorts]
+width  = 1080
+height = 1920
+min_duration = 30.0
+max_duration = 45.0
+pad_before = 1.0            # 1 s antes de la primera línea del primer estribillo
+pad_after  = 1.0            # 1 s después de su última línea
+audio_fade_in  = 0.3
+audio_fade_out = 1.0
+lyrics_size = 72
+lyrics_margin_bottom = 540  # tercio inferior, por encima de la zona de botones de Shorts
+lyrics_margin_sides = 90
+label_size = 38
+label_y = 160               # "Odessa Mae · Chapter N" arriba, chico (borde superior del texto)
+label_min_y = 90            # si la cara está muy arriba, el rótulo sube hasta acá
+label_face_gap = 24         # separación mínima entre rótulo y cara
+
+[compilation]
+output_name = "vol1-the-porch-light-years"
+timestamps_name = "vol1-timestamps.txt"
+gap = 1.5                   # silencio entre canciones
+card_duration = 8.0
+card_fade = 0.8
+segment_fade_in = 0.5       # fundido desde negro al comenzar cada tramo
+segment_fade_out = 1.0      # fundido a negro dentro del silencio entre canciones

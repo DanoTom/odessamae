@@ -1,0 +1,7 @@
+# Insumos pesados (los originales están en Google Drive) y resultados
+odessa-mae/input/mp3/
+odessa-mae/input/images/
+odessa-mae/work/
+odessa-mae/output/
+__pycache__/
+*.pyc
