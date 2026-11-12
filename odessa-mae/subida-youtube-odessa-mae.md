@@ -39,7 +39,7 @@ Todos están en la misma carpeta:
 
 - **Archivo:** `01-you-walked-me-home.mp4`
 - **Miniatura:** `thumb-01.png`
-- **Programar:** martes 24 de noviembre de 2026, 19:00
+- **Programar:** martes 17 de noviembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · Slow Soul Ballads - Odessa Mae
 - **Título:**
 
@@ -110,7 +110,7 @@ You Walked Me Home, Odessa Mae, 1960s soul, southern soul, vintage soul, soul ba
 
 - **Archivo:** `02-blue-sunday-dress.mp4`
 - **Miniatura:** `thumb-02.png`
-- **Programar:** viernes 27 de noviembre de 2026, 19:00
+- **Programar:** viernes 20 de noviembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · 60s Memphis Soul Grooves - Odessa Mae
 - **Título:**
 
@@ -182,7 +182,7 @@ Blue Sunday Dress, Odessa Mae, 1960s soul, southern soul, vintage soul, soul bal
 
 - **Archivo:** `03-two-cups-on-the-table.mp4`
 - **Miniatura:** `thumb-03.png`
-- **Programar:** martes 1 de diciembre de 2026, 19:00
+- **Programar:** martes 24 de noviembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · Slow Soul Ballads - Odessa Mae
 - **Título:**
 
@@ -254,7 +254,7 @@ Two Cups on the Table, Odessa Mae, 1960s soul, southern soul, vintage soul, soul
 
 - **Archivo:** `04-every-letter-says-next-month.mp4`
 - **Miniatura:** `thumb-04.png`
-- **Programar:** viernes 4 de diciembre de 2026, 19:00
+- **Programar:** viernes 27 de noviembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · 60s Memphis Soul Grooves - Odessa Mae
 - **Título:**
 
@@ -326,7 +326,7 @@ Every Letter Says Next Month, Odessa Mae, 1960s soul, southern soul, vintage sou
 
 - **Archivo:** `05-leave-the-porch-light-on.mp4`
 - **Miniatura:** `thumb-05.png`
-- **Programar:** martes 8 de diciembre de 2026, 19:00
+- **Programar:** martes 1 de diciembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · Slow Soul Ballads - Odessa Mae
 - **Título:**
 
@@ -397,7 +397,7 @@ Leave the Porch Light On, Odessa Mae, 1960s soul, southern soul, vintage soul, s
 
 - **Archivo:** `06-mama-says.mp4`
 - **Miniatura:** `thumb-06.png`
-- **Programar:** viernes 11 de diciembre de 2026, 19:00
+- **Programar:** viernes 4 de diciembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · 60s Memphis Soul Grooves - Odessa Mae
 - **Título:**
 
@@ -463,7 +463,7 @@ Mama Says, Odessa Mae, 1960s soul, southern soul, vintage soul, gospel soul, mem
 
 - **Archivo:** `07-first-night-at-mama-roses.mp4`
 - **Miniatura:** `thumb-07.png`
-- **Programar:** martes 15 de diciembre de 2026, 19:00
+- **Programar:** martes 8 de diciembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · Slow Soul Ballads - Odessa Mae
 - **Título:**
 
@@ -532,7 +532,7 @@ First Night at Mama Rose's, Odessa Mae, 1960s soul, southern soul, vintage soul,
 
 - **Archivo:** `08-i-dont-live-there-anymore.mp4`
 - **Miniatura:** `thumb-08.png`
-- **Programar:** viernes 18 de diciembre de 2026, 19:00
+- **Programar:** viernes 11 de diciembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order · 60s Memphis Soul Grooves - Odessa Mae
 - **Título:**
 
@@ -604,7 +604,7 @@ I Don't Live There Anymore, Odessa Mae, 1960s soul, southern soul, vintage soul,
 
 - **Archivo:** `vol1-the-porch-light-years.mp4`
 - **Miniatura:** `thumb-vol1.png`
-- **Programar:** martes 22 de diciembre de 2026, 19:00
+- **Programar:** martes 15 de diciembre de 2026, 19:00
 - **Listas:** The Odessa Mae Story - In Order (al final)
 - **Título:**
 
@@ -653,14 +653,14 @@ Cada Short se sube como video corto desde YouTube Studio, el mismo día que su s
 
 | Archivo | Programar | Título | Video relacionado |
 | --- | --- | --- | --- |
-| `short-01.mp4` | martes 24/11, 20:00 | He walked her home the long way round #soulmusic #60ssoul | You Walked Me Home |
-| `short-02.mp4` | viernes 27/11, 20:00 | Is that a Sunday dress? #soulmusic #60ssoul | Blue Sunday Dress |
-| `short-03.mp4` | martes 1/12, 20:00 | Two cups on the table, one sugar, one black #soulmusic #60ssoul | Two Cups on the Table |
-| `short-04.mp4` | viernes 4/12, 20:00 | Every letter says next month #soulmusic #60ssoul | Every Letter Says Next Month |
-| `short-05.mp4` | martes 8/12, 20:00 | The light don't know you went away #soulmusic #60ssoul | Leave the Porch Light On |
-| `short-06.mp4` | viernes 11/12, 20:00 | Mama, what if he's coming? #soulmusic #60ssoul | Mama Says |
-| `short-07.mp4` | martes 15/12, 20:00 | I sang it for you, Lonnie #soulmusic #60ssoul | First Night at Mama Rose's |
-| `short-08.mp4` | viernes 18/12, 20:00 | Honey, I don't live there anymore #soulmusic #60ssoul | I Don't Live There Anymore |
+| `short-01.mp4` | martes 17/11, 20:00 | He walked her home the long way round #soulmusic #60ssoul | You Walked Me Home |
+| `short-02.mp4` | viernes 20/11, 20:00 | Is that a Sunday dress? #soulmusic #60ssoul | Blue Sunday Dress |
+| `short-03.mp4` | martes 24/11, 20:00 | Two cups on the table, one sugar, one black #soulmusic #60ssoul | Two Cups on the Table |
+| `short-04.mp4` | viernes 27/11, 20:00 | Every letter says next month #soulmusic #60ssoul | Every Letter Says Next Month |
+| `short-05.mp4` | martes 1/12, 20:00 | The light don't know you went away #soulmusic #60ssoul | Leave the Porch Light On |
+| `short-06.mp4` | viernes 4/12, 20:00 | Mama, what if he's coming? #soulmusic #60ssoul | Mama Says |
+| `short-07.mp4` | martes 8/12, 20:00 | I sang it for you, Lonnie #soulmusic #60ssoul | First Night at Mama Rose's |
+| `short-08.mp4` | viernes 11/12, 20:00 | Honey, I don't live there anymore #soulmusic #60ssoul | I Don't Live There Anymore |
 
 ---
 
