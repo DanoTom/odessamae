@@ -144,6 +144,10 @@ margin_sides = 120
 lead = 0.2                  # la línea aparece 0,2 s antes de que se cante
 silence_hold = 1.5          # y se va tras 1,5 s de silencio (o cuando empieza la siguiente)
 min_display = 0.7
+# Whisper suele estirar hacia atrás la primera palabra de una línea después de una pausa.
+# Si dura más de first_word_max, el comienzo se estima como su final menos first_word_typical.
+first_word_max = 1.0
+first_word_typical = 0.6
 strip_line_end_punct = true # quita la coma/punto final de cada línea (no ? ni !)
 whisper_model = "medium.en"
 whisper_compute = "int8"

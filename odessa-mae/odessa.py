@@ -15,6 +15,7 @@ Uso (desde esta carpeta):
   python3 odessa.py compilation
   python3 odessa.py all          [--use-srt]
   python3 odessa.py verify
+  python3 odessa.py report       escribe output/REPORTE.md
 
 --use-srt vuelve a renderizar con los tiempos (y textos) de output/NN-base.srt,
 por ejemplo después de corregirlo a mano. En ese modo el .srt no se sobrescribe.
@@ -312,7 +313,8 @@ class TimedLine:
     show_end: float = 0.0
 
 
-def align_lyrics(lines: list[LyricLine], whisper: dict) -> list[TimedLine]:
+def align_lyrics(lines: list[LyricLine], whisper: dict, first_word_max: float = 1.0,
+                 first_word_typical: float = 0.6) -> list[TimedLine]:
     from rapidfuzz.distance import Indel
     import numpy as np
 
@@ -388,7 +390,13 @@ def align_lyrics(lines: list[LyricLine], whisper: dict) -> list[TimedLine]:
             tl.located = True
             first_req = next((k for k, x in enumerate(req) if x[1] >= 0), 0)
             first_tw = next(x[1] for x in req if x[1] >= 0)
-            tl.start = tw[first_tw][1] - 0.3 * first_req
+            w_start, w_end = tw[first_tw][1], tw[first_tw][2]
+            # Whisper suele "estirar" hacia atrás la primera palabra después de una pausa
+            # (le suma el silencio previo). Su final es confiable: si dura demasiado,
+            # el comienzo real se estima desde el final.
+            if w_end - w_start > first_word_max:
+                w_start = max(w_start, w_end - first_word_typical)
+            tl.start = w_start - 0.3 * first_req
             last_any = max(x[1] for x in good)
             trailing = sum(1 for x in reversed(req) if x[1] < 0) if req[-1][1] < 0 else 0
             tl.end = tw[last_any][2] + 0.25 * trailing
@@ -460,7 +468,8 @@ def align_song(cfg, s, lyrics: dict, force=False) -> list[TimedLine]:
     if s["n"] not in lyrics:
         raise SystemExit(f"No encontré la letra del capítulo {s['n']} en {cfg['paths']['lyrics_file']}")
     whisper = transcribe(cfg, s)
-    timed = align_lyrics(lyrics[s["n"]], whisper)
+    lc = cfg["lyrics"]
+    timed = align_lyrics(lyrics[s["n"]], whisper, lc.get("first_word_max", 1.0), lc.get("first_word_typical", 0.6))
     duration = ffprobe_duration(sp["mp3"])
     compute_display(timed, cfg, duration)
     sp["align"].parent.mkdir(parents=True, exist_ok=True)
@@ -1087,9 +1096,59 @@ def cmd_verify(cfg, args):
     return rows
 
 
+def cmd_report(cfg, args):
+    """Escribe output/REPORTE.md a partir de lo que dejaron los otros comandos en work/."""
+    work, out = P(cfg, "work_dir"), P(cfg, "output_dir")
+    vpath = work / "verify.json"
+    rows = json.loads(vpath.read_text()) if vpath.exists() else cmd_verify(cfg, args)
+    L = ["# Reporte de render", ""]
+    L += ["## Archivos y verificación", "",
+          "| Archivo | Tipo | Audio ref. (s) | Video (s) | Audio (s) | LUFS | dBTP | Estado |",
+          "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |"]
+    for r in rows:
+        if r[2] is None:
+            L.append(f"| {r[0]} | {r[1]} | — | — | — | — | — | {r[7]} |")
+        else:
+            L.append(f"| {r[0]} | {r[1]} | {r[2]:.2f} | {r[3]:.2f} | {r[4]:.2f} | {r[5]:.1f} | {r[6]:.1f} | {r[7]} |")
+    L += ["", "## Normalización (loudnorm, dos pasadas)", "",
+          "| Canción | Entrada LUFS | Entrada dBTP | Modo |", "| --- | ---: | ---: | --- |"]
+    for s in cfg["songs"]:
+        jp = song_paths(cfg, s)["norm_json"]
+        if jp.exists():
+            j = json.loads(jp.read_text())
+            L.append(f"| {s['n']:02d} {s['title']} | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | {j['type']} |")
+    cj = work / "compilation" / "vol.loudnorm.json"
+    if cj.exists():
+        j = json.loads(cj.read_text())
+        L.append(f"| Compilación completa | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | {j['type']} |")
+    L += ["", "## Líneas interpoladas", ""]
+    any_interp = False
+    for s in cfg["songs"]:
+        ap_ = song_paths(cfg, s)["align"]
+        if s.get("single") and ap_.exists():
+            bad = [d for d in json.loads(ap_.read_text()) if not d["located"]]
+            for d in bad:
+                any_interp = True
+                L.append(f"- Cap. {s['n']}: «{d['text']}» ({fmt_srt_time(d['show_start'])})")
+    if not any_interp:
+        L.append("Ninguna: todas las líneas se ubicaron en la transcripción.")
+    L += ["", "## Shorts", "", "| Short | Desde | Hasta | Duración | Cara | Nota |", "| --- | ---: | ---: | ---: | --- | --- |"]
+    for s in cfg["songs"]:
+        ip = work / "shorts" / f"short-{s['n']:02d}.json"
+        if ip.exists():
+            j = json.loads(ip.read_text())
+            L.append(f"| short-{s['n']:02d} | {j['start']:.2f} | {j['end']:.2f} | {j['dur']:.1f} s | "
+                     f"{'sí' if j['face'] else 'no (centro)'} | {j['note'] or '—'} |")
+    tp = out / cfg["compilation"]["timestamps_name"]
+    if tp.exists():
+        L += ["", "## Capítulos de la compilación", "", "```text", tp.read_text().strip(), "```"]
+    (out / "REPORTE.md").write_text("\n".join(L) + "\n", encoding="utf-8")
+    print(f"reporte: {rel(out / 'REPORTE.md')}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["align", "preview", "singles", "shorts", "compilation", "all", "verify"])
+    ap.add_argument("command", choices=["align", "preview", "singles", "shorts", "compilation", "all", "verify", "report"])
     ap.add_argument("--config", default=str(ROOT / "config.toml"))
     ap.add_argument("--only", help="lista de capítulos, p. ej. 1,3,5")
     ap.add_argument("--use-srt", action="store_true", help="renderizar con los tiempos de output/NN-base.srt")
@@ -1109,11 +1168,14 @@ def main():
         cmd_compilation(cfg, args)
     elif args.command == "verify":
         cmd_verify(cfg, args)
+    elif args.command == "report":
+        cmd_report(cfg, args)
     elif args.command == "all":
         cmd_singles(cfg, args)
         cmd_shorts(cfg, args)
         cmd_compilation(cfg, args)
         cmd_verify(cfg, args)
+        cmd_report(cfg, args)
 
 
 if __name__ == "__main__":
