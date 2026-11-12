@@ -111,6 +111,9 @@ jobs = 2                    # renders en paralelo
 lufs = -14.0
 true_peak = -1.0
 lra = 20.0                  # LRA objetivo alto: loudnorm queda en modo lineal (solo ganancia)
+allow_dynamic = false       # false: si una canción no llega a -14 LUFS sin pasar -1 dBTP con
+                            # ganancia pura, se sube solo hasta donde da el pico (no se comprime)
+linear_margin = 0.2         # margen bajo el pico máximo en ese caso (dB)
 bitrate = "320k"
 sample_rate = 48000
 

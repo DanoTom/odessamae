@@ -520,7 +520,8 @@ def lyric_cues(cfg, s, timed: list[TimedLine], use_srt: bool):
 # ---------------------------------------------------------------------------
 # Audio
 # ---------------------------------------------------------------------------
-def loudnorm_two_pass(cfg, src_args: list[str], out_wav: Path, out_json: Path, force=False) -> dict:
+def loudnorm_two_pass(cfg, src_args: list[str], out_wav: Path, out_json: Path, force=False,
+                      margin: float | None = None) -> dict:
     if out_wav.exists() and out_json.exists() and not force:
         return json.loads(out_json.read_text())
     ac = cfg["audio"]
@@ -528,6 +529,15 @@ def loudnorm_two_pass(cfg, src_args: list[str], out_wav: Path, out_json: Path, f
     r1 = run(["ffmpeg", "-hide_banner", "-nostats", *src_args, "-af", base + ":print_format=json",
               "-f", "null", "-"])
     m1 = json.loads(re.findall(r"\{[^{}]*\}", r1.stderr)[-1])
+    # Modo lineal = solo ganancia. Si para llegar al objetivo el pico real pasaría el límite,
+    # loudnorm cambia solo a modo dinámico (comprime). Para evitarlo, salvo allow_dynamic,
+    # se baja el objetivo hasta la ganancia máxima que respeta el pico (con un margen).
+    target = float(ac["lufs"])
+    in_i, in_tp = float(m1["input_i"]), float(m1["input_tp"])
+    limit = float(ac["true_peak"]) - (float(ac.get("linear_margin", 0.2)) if margin is None else margin)
+    if not ac.get("allow_dynamic", False) and in_tp + (target - in_i) > limit:
+        target = round(in_i + (limit - in_tp), 2)
+        base = f"loudnorm=I={target}:TP={ac['true_peak']}:LRA={ac['lra']}"
     second = (f"{base}:measured_I={m1['input_i']}:measured_TP={m1['input_tp']}"
               f":measured_LRA={m1['input_lra']}:measured_thresh={m1['input_thresh']}"
               f":offset={m1['target_offset']}:linear=true:print_format=json")
@@ -535,7 +545,7 @@ def loudnorm_two_pass(cfg, src_args: list[str], out_wav: Path, out_json: Path, f
     r2 = run(["ffmpeg", "-y", "-hide_banner", "-nostats", *src_args, "-af", second,
               "-ar", str(ac["sample_rate"]), "-c:a", "pcm_f32le", str(out_wav)])
     m2 = json.loads(re.findall(r"\{[^{}]*\}", r2.stderr)[-1])
-    info = {"pass1": m1, "pass2": m2, "type": m2.get("normalization_type")}
+    info = {"pass1": m1, "pass2": m2, "type": m2.get("normalization_type"), "target_i": target}
     out_json.write_text(json.dumps(info, indent=1))
     return info
 
@@ -1010,7 +1020,9 @@ def cmd_compilation(cfg, args):
     run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", *inputs, "-filter_complex", ";".join(fc),
          "-map", "[out]", "-ar", str(ac["sample_rate"]), "-c:a", "pcm_f32le", rel(concat_wav)])
     norm_wav = work / "vol.norm.wav"
-    info = loudnorm_two_pass(cfg, ["-i", rel(concat_wav)], norm_wav, work / "vol.loudnorm.json", force=True)
+    # el margen solo hace falta en cada canción; el conjunto puede llegar justo a -1 dBTP
+    info = loudnorm_two_pass(cfg, ["-i", rel(concat_wav)], norm_wav, work / "vol.loudnorm.json", force=True,
+                             margin=0.0)
     total = audio_samples_duration(norm_wav)
     # 2) tramos de video
     starts, t = [], 0.0
@@ -1033,9 +1045,16 @@ def cmd_compilation(cfg, args):
               + f",subtitles=filename='{esc_filter_path(ass)}':fontsdir='{esc_filter_path(P(cfg, 'fonts_dir'))}'"
               + f",fade=t=in:st=0:d={cc['segment_fade_in']},fade=t=out:st={seg_dur - fo:.3f}:d={fo},format=yuv420p")
         out = work / f"seg-{sp['nn']}.mp4"
+        sig = work / f"seg-{sp['nn']}.sig"
+        signature = json.dumps({"vf": vf, "x264": x264_args(cfg), "nf": nf,
+                                "img": sp["image"].stat().st_mtime, "ass": ass.read_text()})
+        if out.exists() and sig.exists() and sig.read_text() == signature:
+            print(f"  tramo {sp['nn']} sin cambios: se reutiliza", flush=True)
+            return out
         run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", rel(sp["image"]),
              "-filter_complex", f"[0:v]{vf}[v]", "-map", "[v]", *x264_args(cfg),
              "-frames:v", str(nf), rel(out)])
+        sig.write_text(signature)
         print(f"  tramo {sp['nn']} listo ({seg_dur:.1f} s)", flush=True)
         return out
 
@@ -1111,16 +1130,18 @@ def cmd_report(cfg, args):
         else:
             L.append(f"| {r[0]} | {r[1]} | {r[2]:.2f} | {r[3]:.2f} | {r[4]:.2f} | {r[5]:.1f} | {r[6]:.1f} | {r[7]} |")
     L += ["", "## Normalización (loudnorm, dos pasadas)", "",
-          "| Canción | Entrada LUFS | Entrada dBTP | Modo |", "| --- | ---: | ---: | --- |"]
+          "| Canción | Entrada LUFS | Entrada dBTP | Objetivo LUFS | Modo |", "| --- | ---: | ---: | ---: | --- |"]
     for s in cfg["songs"]:
         jp = song_paths(cfg, s)["norm_json"]
         if jp.exists():
             j = json.loads(jp.read_text())
-            L.append(f"| {s['n']:02d} {s['title']} | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | {j['type']} |")
+            L.append(f"| {s['n']:02d} {s['title']} | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | "
+                     f"{j.get('target_i', cfg['audio']['lufs'])} | {j['type']} |")
     cj = work / "compilation" / "vol.loudnorm.json"
     if cj.exists():
         j = json.loads(cj.read_text())
-        L.append(f"| Compilación completa | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | {j['type']} |")
+        L.append(f"| Compilación completa | {j['pass1']['input_i']} | {j['pass1']['input_tp']} | "
+                 f"{j.get('target_i', cfg['audio']['lufs'])} | {j['type']} |")
     L += ["", "## Líneas interpoladas", ""]
     any_interp = False
     for s in cfg["songs"]:
