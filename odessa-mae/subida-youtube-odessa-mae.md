@@ -52,7 +52,7 @@ You Walked Me Home - Odessa Mae | 1960s Southern Soul Ballad
 ```text
 Chapter 1. The day Lonnie walked her home the long way round: three miles of red dirt road, just so he wouldn't have to say goodbye.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: This is where Odessa's story begins, and the long way home is an image you'll meet again in the very last chapter. Listen to the final chorus: the words shift, and a sweet memory quietly becomes a confession.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -123,7 +123,7 @@ Blue Sunday Dress - Odessa Mae | 1960s Memphis Soul
 ```text
 Chapter 2. Nickels saved in a coffee can, the bluest dress at Hammond's, and a Saturday night at Mama Rose's that lasted till Monday.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: I wanted one chapter of pure joy before things got complicated, so the backing singers play the crowd at Mama Rose's. Keep an eye on that blue dress: it comes back when Odessa needs it most.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -195,7 +195,7 @@ Two Cups on the Table - Odessa Mae | 1960s Southern Soul Ballad
 ```text
 Chapter 3. Two rooms behind Miller's gin, two cups on the table every morning, until a letter from Chicago changed everything.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: Everyday things carry this story: a tin roof, a fixed hinge, two coffee cups every morning. By the last chorus, that little habit has turned into a promise to wait.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -267,7 +267,7 @@ Every Letter Says Next Month - Odessa Mae | 1960s Memphis Soul
 ```text
 Chapter 4. The letters from Chicago keep saying "next month." Every month they get a little thinner.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: The band keeps smiling while the letters get thinner, and that contrast is the whole song. Nobody says the words 'another woman'; the perfume in August says it for her.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -339,7 +339,7 @@ Leave the Porch Light On - Odessa Mae | 1960s Deep Soul Ballad
 ```text
 Chapter 5. The letters stopped. The neighbors talk. She keeps the porch light on anyway.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: If I had to pick one song to explain this channel, it would be this one. The last line changes everything: the light keeps waiting, even though he's gone.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -410,7 +410,7 @@ Mama Says - Odessa Mae | 1960s Gospel Soul
 ```text
 Chapter 6. Mama says let him go. Sister says let him go. Even the pastor said it Sunday morning.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: Here the backing singers become Mama, Sister and the Pastor, all telling her the same thing. The bridge is a real argument with her mother, and in the last chorus, for the first time, Odessa starts to doubt.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -476,7 +476,7 @@ First Night at Mama Rose's - Odessa Mae | 1960s Soul Ballad
 ```text
 Chapter 7. Her first night singing at Mama Rose's, in the blue dress that still fit.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: The blue dress comes back, and Odessa sings in public for the first time. Only one word changes in the last chorus, 'for you' becomes 'for me', and that's the whole turn of the story.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
@@ -545,7 +545,7 @@ I Don't Live There Anymore - Odessa Mae | 1960s Memphis Soul
 ```text
 Chapter 8. Eighteen months later, Lonnie writes that he's coming home. But she doesn't live there anymore.
 
-A note from the writer: [PENDIENTE: dos frases tuyas sobre la canción]
+A note from the writer: I wanted the reunion to have no bitterness at all, just a woman who has moved on and is enjoying it. Listen to how it ends: she doesn't slam the door, she sells him a ticket.
 
 ▶ Start the story from Chapter 1: [LINK_LISTA]
 
